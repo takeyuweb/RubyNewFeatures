@@ -5,8 +5,10 @@ class TestBindingLocalVariables < Test::Unit::TestCase
     hoge = 'HOGE'
     closure = Proc.new do
       fuga = 'FUGA'
-      binding.local_variables
+      binding
     end
-    assert_empty(closure.call - %i(hoge fuga closure))
+    b = closure.call
+    # closure内コンテキストのローカル変数を得られる
+    assert_empty(b.local_variables - %i(hoge fuga closure b))
   end
 end
