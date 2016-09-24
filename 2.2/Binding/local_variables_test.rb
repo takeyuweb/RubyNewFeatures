@@ -10,5 +10,7 @@ class TestBindingLocalVariables < Test::Unit::TestCase
     b = closure.call
     # closure内コンテキストのローカル変数を得られる
     assert_empty(b.local_variables - %i(hoge fuga closure b))
+    # local_variable_get で変数の値も得られる
+    assert_equal('FUGA', b.local_variable_get(:fuga))
   end
 end
