@@ -20,4 +20,13 @@ class TestFloatNext < Test::Unit::TestCase
     assert(step_a < step_b)
   end
 
+  def test_infinity
+    assert_equal(1, Float::INFINITY.next_float.infinite?)
+    assert_equal(nil, (-Float::INFINITY).next_float.infinite?)
+  end
+
+  def test_nan
+    assert(Float::NAN.next_float.nan?)
+  end
+
 end
