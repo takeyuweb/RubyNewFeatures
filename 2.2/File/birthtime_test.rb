@@ -11,4 +11,9 @@ class TestFileBirthtime < Test::Unit::TestCase
     assert_instance_of(Time, file.birthtime)
   end
 
+  def test_stat_birthtime
+    stat = File.stat(__FILE__)
+    assert_instance_of(Time, stat.birthtime)
+  end
+
 end
