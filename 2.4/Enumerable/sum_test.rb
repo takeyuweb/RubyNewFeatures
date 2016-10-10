@@ -6,6 +6,8 @@ class TestSum < Test::Unit::TestCase
     hash = { a: 1, b: 2, c: 3, d: 1 }
     # sumに渡したブロックの戻り値を合計する
     assert_equal(7, hash.sum {|k, v| v })
+    # もちろん&シンボルでもOK
+    assert_equal(7, hash.sum(&:last))
   end
 
 end
