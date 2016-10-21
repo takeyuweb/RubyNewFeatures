@@ -5,6 +5,7 @@ class TestRegexpMatchQuestion < Test::Unit::TestCase
   def test_match_question
     str = 'ABCDEFG'
     assert_true(/CDE/.match?(str))
+    assert_false(/HIJ/.match?(str))
   end
 
   def test_doesnt_save_backref
