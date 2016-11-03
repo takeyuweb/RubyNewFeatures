@@ -11,4 +11,10 @@ class TestDateTimeSubsec < Test::Unit::TestCase
     assert_equal(date_time.to_f, date_time.to_i + date_time.subsec)
   end
 
+  def test_sec_fraction
+    # 標準の DateTime#sec_fraction と同じ
+    date_time = DateTime.now
+    assert_equal(date_time.sec_fraction, date_time.subsec)
+  end
+
 end

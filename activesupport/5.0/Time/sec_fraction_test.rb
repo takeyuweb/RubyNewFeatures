@@ -10,4 +10,10 @@ class TestTimeSecFraction < Test::Unit::TestCase
     assert_equal(Rational(1, 2), time.sec_fraction)
   end
 
+  def test_subsec
+    time = Time.now
+    # 標準の Time#subsec と同じ
+    assert_equal(time.subsec, time.sec_fraction)
+  end
+
 end
