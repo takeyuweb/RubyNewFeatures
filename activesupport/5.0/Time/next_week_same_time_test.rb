@@ -18,6 +18,11 @@ class TestNextWeekSameTime < Test::Unit::TestCase
     assert_equal(
         Time.mktime(2016, 11, 28, 0, 1, 2),
         t.next_week(same_time: true))
+
+    # 曜日を指定することもできる
+    assert_equal(
+        Time.mktime(2016, 12, 1, 0, 1, 2),
+        t.next_week(:thursday, same_time: true))
   end
 
 end
