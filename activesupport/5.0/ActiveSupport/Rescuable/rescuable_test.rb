@@ -4,19 +4,30 @@ require 'active_support/rescuable'
 
 class Hoge
   include ActiveSupport::Rescuable
-  attr_reader :rescued
+  attr_reader :error_code
 
-  class RescueableError < StandardError;
+  class RescueableError < StandardError
+    def code
+      100
+    end
   end
   class UnrescueableError < StandardError;
   end
 
-  rescue_from RescueableError do
-    @rescued = true
+  module ErrorDispatcher
+
+    def self.===(other)
+      other.respond_to?(:code)
+    end
+
+  end
+
+  rescue_from ErrorDispatcher do |error|
+    @error_code = error.code
   end
 
   def initialize
-    @rescued = false
+    @error_code = nil
   end
 
   def without_error_handling
@@ -51,21 +62,21 @@ class TestRescuable < Test::Unit::TestCase
     hoge = Hoge.new
     # 自動的に rescue_from が実行されるものではない
     assert_raise(Hoge::RescueableError) { hoge.without_error_handling }
-    assert_false(hoge.rescued)
+    assert_nil(hoge.error_code)
   end
 
   def test_with_error_handling
     hoge = Hoge.new
     # 例外を resque し、rescue_with_handler(e) に渡すと、指定したエラーなら真を返す
     assert_equal(:subject, hoge.with_error_handling)
-    assert(hoge.rescued)
+    assert_equal(100, hoge.error_code)
   end
 
   def test_not_subject_to_error_handling
     hoge = Hoge.new
     # 例外を resque し、rescue_with_handler(e) に渡すと、指定したエラーでないなら偽を返す
     assert_equal(:not_subject, hoge.not_subject_to_error_handling)
-    assert_false(hoge.rescued)
+    assert_nil(hoge.error_code)
   end
 
 end
