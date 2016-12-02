@@ -130,5 +130,43 @@ OptionParser.new do |opt|
     pp resp.operations
   end
 
+  opt.on('--create_instance_snapshot=INSTANCE_NAME,INSTANCE_SNAPSHOT_NAME', Array) do |instance_name, snapshot_name|
+    res = lightsail.create_instance_snapshot(
+        instance_name: instance_name,
+        instance_snapshot_name: snapshot_name
+    )
+    pp res.operations
+  end
+
+  opt.on('--get_instance_snapshot=INSTANCE_SNAPSHOT_NAME') do |snapshot_name|
+    res = lightsail.get_instance_snapshot(
+        instance_snapshot_name: snapshot_name
+    )
+    pp res.instance_snapshot
+  end
+
+  opt.on('--get_instance_snapshots') do
+    res = lightsail.get_instance_snapshots()
+    pp res.instance_snapshots
+    pp res.next_page_token
+  end
+
+  opt.on('--create_instances_from_snapshot=INSTANCE_SNAPSHOT_NAME') do |snapshot_name|
+    resp = lightsail.create_instances_from_snapshot(
+        instance_names: %w(vps4 vps5),
+        availability_zone: 'us-east-1a',
+        instance_snapshot_name: snapshot_name,
+        bundle_id: 'nano_1_0',
+    )
+    pp resp.operations
+  end
+
+  opt.on('--delete_instance_snapshot=INSTNACE_SNAPSHOT_NAME') do |snapshot_name|
+    res = lightsail.delete_instance_snapshot(
+        instance_snapshot_name: snapshot_name
+    )
+    pp res.operations
+  end
+
   opt.parse!(ARGV)
 end
