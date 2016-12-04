@@ -199,5 +199,116 @@ OptionParser.new do |opt|
     pp res.operation
   end
 
+  opt.on('--allocate_static_ip') do
+    resp = lightsail.allocate_static_ip(
+        static_ip_name: 'sample'
+    )
+    pp resp.operations
+  end
+
+  opt.on('--attach_static_ip') do
+    resp = lightsail.attach_static_ip(
+        static_ip_name: 'sample',
+        instance_name: 'vps1'
+    )
+    pp resp.operations
+  end
+
+  opt.on('--detach_static_ip') do
+    resp = lightsail.detach_static_ip(
+        static_ip_name: 'sample'
+    )
+    pp resp.operations
+  end
+
+  opt.on('--release_static_ip') do
+    resp = lightsail.release_static_ip(
+        static_ip_name: 'sample'
+    )
+    pp resp.operations
+  end
+
+  opt.on('--get_static_ip') do
+    resp = lightsail.get_static_ip(
+        static_ip_name: 'sample'
+    )
+    pp resp.static_ip
+  end
+
+  opt.on('--get_static_ips') do
+    resp = lightsail.get_static_ips()
+    pp resp.static_ips
+    pp resp.next_page_token
+  end
+
+  opt.on('--create_domain=DOMAIN_NAME') do |domain_name|
+    res = lightsail.create_domain(
+        domain_name: domain_name,
+    )
+    pp res.operation
+  end
+
+  opt.on('--get_domain=DOMAIN_NAME') do |domain_name|
+    resp = lightsail.get_domain(
+        domain_name: domain_name
+    )
+    pp resp.domain
+  end
+
+  opt.on('--create_domain_entry=DOMAIN_NAME') do |domain_name|
+    ip_address =
+        lightsail.get_instance(instance_name: 'vps1').instance.public_ip_address
+    res = lightsail.create_domain_entry(
+        domain_name: domain_name,
+        domain_entry: {
+            id: "sub.#{domain_name}",
+            name: "sub.#{domain_name}",
+            target: ip_address,
+            type: 'A' # A, CNAME, MX, and TXT
+        }
+    )
+    pp res.operation
+  end
+
+  opt.on('--delete_domain=DOMAIN_NAME') do |domain_name|
+    res = lightsail.delete_domain(
+        domain_name: domain_name
+    )
+    pp res.operation
+  end
+
+  opt.on('--delete_domain_entry=DOMAIN_NAME') do |domain_name|
+    domain_entry =
+        lightsail.
+            get_domain(domain_name: domain_name).
+            domain.domain_entries.select { |entry| entry.type == 'A' }.first
+    res = lightsail.delete_domain_entry(
+        domain_name: domain_name,
+        domain_entry: domain_entry
+    )
+    pp res.operation
+  end
+
+  opt.on('--get_domain=DOMAIN_NAME') do |domain_name|
+    res = lightsail.get_domain(
+        domain_name: domain_name,
+
+    )
+    pp res.domain
+  end
+
+  opt.on('--get_domains') do
+    res = lightsail.get_domains()
+    pp res.domains
+  end
+
+  opt.on('--get_domain=DOMAIN_NAME') do |domain_name|
+    res = lightsail.get_domain(
+        domain_name: domain_name,
+
+    )
+    pp res.domain
+  end
+
   opt.parse!(ARGV)
 end
