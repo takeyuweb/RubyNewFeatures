@@ -168,5 +168,36 @@ OptionParser.new do |opt|
     pp res.operations
   end
 
+  opt.on('--get_instance_port_states=INSTANCE_NAME') do |instance_name|
+    res = lightsail.get_instance_port_states(
+        instance_name: instance_name
+    )
+    pp res.port_states
+  end
+
+  opt.on('--open_instance_public_ports=INSTANCE_NAME') do |instance_name|
+    res = lightsail.open_instance_public_ports(
+        instance_name: instance_name,
+        port_info: {
+            from_port: 8000,
+            to_port: 8080,
+            protocol: 'tcp'
+        }
+    )
+    pp res.operation
+  end
+
+  opt.on('--close_instance_public_ports=INSTANCE_NAME') do |instance_name|
+    res = lightsail.close_instance_public_ports(
+        instance_name: instance_name,
+        port_info: {
+            from_port: 8000,
+            to_port: 8080,
+            protocol: 'tcp'
+        }
+    )
+    pp res.operation
+  end
+
   opt.parse!(ARGV)
 end
