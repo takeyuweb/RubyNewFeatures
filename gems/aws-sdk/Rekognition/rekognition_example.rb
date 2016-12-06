@@ -1,10 +1,7 @@
 require 'aws-sdk'
 require 'optparse'
 require 'pp'
-
-def read_file(filename)
-  File.read(File.join(File.dirname(__FILE__), '..', '..', 'files', filename))
-end
+require_relative './helper'
 
 rekognition = Aws::Rekognition::Client.new
 
