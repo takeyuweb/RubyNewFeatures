@@ -28,3 +28,39 @@ TEXT
 )
 
 pp polly.describe_voices(language_code: 'ja-JP')
+
+pp polly.synthesize_speech(
+    response_target: '/mnt/c/Users/uzuki/Music/polly_example_www_en.mp3',
+    output_format: 'mp3',
+    text: 'WWW transformed the world.',
+    text_type: 'text',
+    voice_id: 'Joanna'
+)
+
+pp polly.put_lexicon(
+    name: 'samplelexicon',
+    content: <<XML,
+<?xml version="1.0" encoding="UTF-8"?>
+<lexicon version="1.0"
+      xmlns="http://www.w3.org/2005/01/pronunciation-lexicon"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.w3.org/2005/01/pronunciation-lexicon
+        http://www.w3.org/TR/2007/CR-pronunciation-lexicon-20071212/pls.xsd"
+      alphabet="ipa"
+      xml:lang="en-US">
+  <lexeme>
+    <grapheme>WWW</grapheme>
+    <alias>World Wide Web</alias>
+  </lexeme>
+</lexicon>
+XML
+)
+
+pp polly.synthesize_speech(
+    response_target: '/mnt/c/Users/uzuki/Music/polly_example_world_wide_web_en.mp3',
+    output_format: 'mp3',
+    text: 'WWW transformed the world.',
+    text_type: 'text',
+    voice_id: 'Joanna',
+    lexicon_names: ['samplelexicon']
+)
