@@ -19,14 +19,7 @@ class TestOrNode < Test::Unit::TestCase
       enum sex: %i(male female)
     end
     Object.const_set :User, user_class
-  end
 
-  teardown do
-    @migration.migrate(:down)
-    Object.send(:remove_const, :User)
-  end
-
-  def test_or
     [
         {
             name: 'Taro',
@@ -49,7 +42,14 @@ class TestOrNode < Test::Unit::TestCase
             sex: 'female'
         },
     ].each { |data| User.create!(data) }
+  end
 
+  teardown do
+    @migration.migrate(:down)
+    Object.send(:remove_const, :User)
+  end
+
+  def test_or
     users = User.male.or(User.where('age > 35'))
     puts users.to_sql
 =begin
@@ -64,29 +64,6 @@ WHERE ("users"."sex" = 0 OR (age > 35))
 
 
   def test_or_group
-    [
-        {
-            name: 'Taro',
-            age: 30,
-            sex: 'male'
-        },
-        {
-            name: 'Hanako',
-            age: 32,
-            sex: 'female'
-        },
-        {
-            name: 'Yuichi',
-            age: 32,
-            sex: 'male'
-        },
-        {
-            name: 'Mika',
-            age: 38,
-            sex: 'female'
-        },
-    ].each { |data| User.create!(data) }
-
     male_over30 = User.male.where!('age > ?', 30)
     female_over35 = User.female.where!('age > ?', 35)
 
