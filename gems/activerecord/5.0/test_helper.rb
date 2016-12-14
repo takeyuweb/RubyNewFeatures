@@ -2,7 +2,7 @@ require 'test/unit'
 require 'active_record'
 
 ActiveRecord::Base.establish_connection(
-    adapter: 'sqlite3',
-    database: ':memory:'
+    adapter: 'mysql2',
+    database: 'ruby_new_feature',
+    username: 'root'
 )
-
